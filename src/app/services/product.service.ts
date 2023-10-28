@@ -49,4 +49,9 @@ export class ProductService {
 
     return of(true); // Return success as this is a simulation.
   }
+
+  public searchProduct(keyword : string): Observable<Product[]>{
+    let products = this.products.filter(p =>p.name.includes(keyword));
+    return of(products);
+  }
 }

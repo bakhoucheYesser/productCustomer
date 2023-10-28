@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../services/product.service";
 import {Product} from "../model/product.model";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 
 @Component({
@@ -12,9 +13,13 @@ export class ProductsComponent implements OnInit {
 
   products! :Array<Product>
   errorMessage: string = "no data found";
-  constructor(private productservice : ProductService) { }
+  searchFormGroup! : FormGroup;
+  constructor(private productservice : ProductService ,private fb : FormBuilder) { }
 
   ngOnInit(): void {
+    this.searchFormGroup = this.fb.group({
+      keyword : this.fb.control(null)
+    });
     this.getAllProducts()
   }
   getAllProducts(){
@@ -50,4 +55,13 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  handelSearchProduct() {
+    let keyword = this.searchFormGroup.value.keyword;
+    this.productservice.searchProduct(keyword).subscribe({
+      next : (data) => {
+        this.products =data;
+      }
+    })
+
+  }
 }
