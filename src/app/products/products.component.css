@@ -1,0 +1,33 @@
+.red-gradient-icon {
+    background-color: #f62929;    -webkit-background-clip: text;
+    color: transparent;
+    background-clip: text;
+}
+
+.success-badge {
+    background-color: #87ee82;
+    color: #06b406;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.danger-badge {
+    background-color: #ffa0a0;
+    color: #f62929;
+}
+.delete-icon {
+    cursor: pointer;
+}
+table {
+    width: 100%; /* Optional: Set the table width */
+}
+
+th, td {
+    text-align: center; /* Center the content within each cell */
+    padding: 10px; /* Add padding for spacing (optional) */
+}
+
+/* Optional: Style the table headers */

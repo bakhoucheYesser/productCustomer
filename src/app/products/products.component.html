@@ -1,0 +1,45 @@
+<div class="container">
+  <ng-template #errors>
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  </ng-template>
+  <div class="card" *ngIf="products; else errors">
+    <div class="card-header">Products List</div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Promotion</th>
+          <th>Action</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of products">
+          <td>{{ p.id }}</td>
+          <td>{{ p.name }}</td>
+          <td>{{ p.price }}</td>
+          <td>
+            <span [ngClass]="{'badge success-badge': p.promotion, 'badge danger-badge': !p.promotion}">
+                       {{ p.promotion ? ' Active ' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <button (click)="handleTogglePromotion(p)" class="btn btn-outline-primary btn-sm">
+              {{ p.promotion ? 'Deactivate' : 'Activate' }}
+            </button>
+          </td>
+          <td>
+            <a (click)="handelDeleteProduct(p)" class="danger"><i class="bi-trash red-gradient-icon delete-icon"></i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
