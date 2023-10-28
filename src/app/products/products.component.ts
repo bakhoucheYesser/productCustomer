@@ -18,6 +18,7 @@ export class ProductsComponent implements OnInit {
 
   errorMessage: string = "no data found";
   searchFormGroup! : FormGroup;
+  currentAction : string = "all";
   constructor(private productservice : ProductService ,private fb : FormBuilder) { }
 
   ngOnInit(): void {
@@ -74,10 +75,13 @@ export class ProductsComponent implements OnInit {
   }
 
   handelSearchProduct() {
+    this.currentAction = "search";
+    this.currentPage = 0;
     let keyword = this.searchFormGroup.value.keyword;
-    this.productservice.searchProduct(keyword).subscribe({
+    this.productservice.searchProduct(keyword ,this.currentPage , this.pageSize).subscribe({
       next : (data) => {
-        this.products =data;
+        this.products =data.products;
+        this.totalPages = data.totalPages;
       }
     })
 
@@ -85,6 +89,9 @@ export class ProductsComponent implements OnInit {
 
   gotoPage(i: number) {
     this.currentPage = i;
+    if (this.currentAction ==="all")
     this.handelGetPageProducts();
+    else
+      this.handelSearchProduct();
   }
 }
