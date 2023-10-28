@@ -11,7 +11,11 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 })
 export class ProductsComponent implements OnInit {
 
-  products! :Array<Product>
+  products! :Array<Product>;
+  currentPage : number = 0 ;
+  pageSize : number = 5;
+  totalPages: number = 0;
+
   errorMessage: string = "no data found";
   searchFormGroup! : FormGroup;
   constructor(private productservice : ProductService ,private fb : FormBuilder) { }
@@ -20,8 +24,22 @@ export class ProductsComponent implements OnInit {
     this.searchFormGroup = this.fb.group({
       keyword : this.fb.control(null)
     });
-    this.getAllProducts()
+    this.handelGetPageProducts();
   }
+
+  handelGetPageProducts(){
+    this.productservice.getPageProducts(this.currentPage ,this.pageSize).subscribe({
+      next : (data) =>{
+        this.products =data.products;
+        this.totalPages= data.totalPages;
+      },
+      error : (err)=>{
+        this.errorMessage=err;
+      }
+    });
+  }
+
+
   getAllProducts(){
     this.productservice.getAllProducts().subscribe({
       next : (data) =>{
@@ -63,5 +81,10 @@ export class ProductsComponent implements OnInit {
       }
     })
 
+  }
+
+  gotoPage(i: number) {
+    this.currentPage = i;
+    this.handelGetPageProducts();
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from "rxjs";
-import {Product} from "../model/product.model";
+import {PageProduct, Product} from "../model/product.model";
+import {UUID} from "angular2-uuid";
 
 @Injectable({
   providedIn: 'root'
@@ -11,31 +12,47 @@ export class ProductService {
   constructor() {
     this.products= [
       {
-        id:1,
+        id:UUID.UUID(),
         name:"computer",
         price:6500,
         promotion:true
       },
       {
-        id:2,
+        id:UUID.UUID(),
         name:"Tv",
         price:4521,
         promotion:true
       },
       {
-        id:3,
+        id:UUID.UUID(),
         name:"Smartphone",
         price:9854,
         promotion:false
       },
-    ]
+    ];
+    for (let i = 0 ; i<10 ; i++){
+      this.products.push({ id:UUID.UUID(),
+        name:"computer",
+        price:6500,
+        promotion:true});
+      this.products.push({id:UUID.UUID(),
+        name:"Tv",
+        price:4521,
+        promotion:true});
+      this.products.push({
+        id:UUID.UUID(),
+        name:"Smartphone",
+        price:9854,
+        promotion:false
+      })
+    }
   }
 
   public getAllProducts() : Observable<Product[]>{
     return of(this.products);
   }
 
-  public deleteProduct(id:number): Observable<boolean>{
+  public deleteProduct(id:string): Observable<boolean>{
     this.products=this.products.filter(p=>p.id!=id)
     return of(true)
   }
@@ -53,5 +70,14 @@ export class ProductService {
   public searchProduct(keyword : string): Observable<Product[]>{
     let products = this.products.filter(p =>p.name.includes(keyword));
     return of(products);
+  }
+
+  public getPageProducts(page: number, size : number ) : Observable<PageProduct>{
+    let index = page*size;
+    let totalPages = ~~(this.products.length / size);
+    if(this.products.length % size !=0)
+      totalPages++;
+    let pageProducts =this.products.slice(index,index + size);
+    return of({page :page , size:size , totalPages :totalPages , products:pageProducts});
   }
 }
