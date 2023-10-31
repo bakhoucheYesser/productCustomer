@@ -27,7 +27,7 @@ export class AuthenticationService {
 
   public authenticateUser(appUser : AppUser) :Observable<boolean>{
     this.authenticatedUser = appUser ;
-    localStorage.setItem("authuser" , JSON.stringify(
+    localStorage.setItem("auth-user" , JSON.stringify(
       {username:appUser.username ,
         roles : appUser.roles ,
         jwt : "JWT_TOKEN"
@@ -41,5 +41,11 @@ export class AuthenticationService {
 
   isAuthenticated(){
     return this.authenticatedUser!=undefined;
+  }
+
+  public logout() : Observable<boolean>{
+    this.authenticatedUser = undefined;
+    localStorage.removeItem("auth-user");
+    return of(true);
   }
 }

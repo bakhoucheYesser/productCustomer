@@ -23,8 +23,8 @@
           <th>Name</th>
           <th>Price</th>
           <th>Promotion</th>
-          <th>Action</th>
-          <th>Delete</th>
+          <th *ngIf="authService.hasRole('ADMIN')">Action</th>
+          <th *ngIf="authService.hasRole('ADMIN')">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -37,12 +37,12 @@
                        {{ p.promotion ? ' Active ' : 'Inactive' }}
             </span>
           </td>
-          <td>
+          <td *ngIf="authService.hasRole('ADMIN')">
             <button (click)="handleTogglePromotion(p)" class="btn btn-outline-primary btn-sm">
               {{ p.promotion ? 'Deactivate' : 'Activate' }}
             </button>
           </td>
-          <td>
+          <td *ngIf="authService.hasRole('ADMIN')">
             <a (click)="handelDeleteProduct(p)" class="danger"><i class="bi-trash red-gradient-icon delete-icon"></i></a>
           </td>
         </tr>
